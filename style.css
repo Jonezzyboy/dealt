@@ -726,6 +726,17 @@ button {
 
 .theme-menu button.selected { font-weight: 600; }
 
+.also {
+  width: min(560px, 100%);
+  margin-top: 14px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--on-felt-soft);
+}
+
+.also a { color: var(--on-felt); }
+
 /* ---------- toasts ---------- */
 
 .toasts {
