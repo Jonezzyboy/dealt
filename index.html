@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dealt — the daily poker read</title>
+<meta name="description" content="Twelve cards on the table, five in the dealer's hand. Four calls to find them. A fresh deal every day.">
+<link rel="canonical" href="https://jonezzyboy.github.io/dealt/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🃏</text></svg>">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2790049582805492"
+     crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script>try { var t = localStorage.getItem('dealt-theme-v1'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <h1 class="wordmark">Dealt<span class="stop">.</span></h1>
+  <p class="meta"><span id="issue">No. —</span> · <span id="date"></span></p>
+  <p class="archive-note" id="archiveNote" hidden>
+    A past deal, replayed for practice — streaks and commendations unaffected.
+    <a href=".">Back to tonight's</a>
+  </p>
+  <p class="tagline">Twelve cards on the table. Five in the dealer's hand. Call it.</p>
+  <details class="rules">
+    <summary>How to play</summary>
+    <div class="rules-body">
+      <ol class="rules-steps">
+        <li>The dealer is holding five of the twelve cards on the table,
+          and admits what the hand ranks as.</li>
+        <li>Pick five cards to call the hand. Each card comes back with a tell —
+          <span class="tell-eg hit">right card, right place</span>,
+          <span class="tell-eg near">in the hand, wrong place</span>, or
+          <span class="tell-eg out">not in the hand</span>.</li>
+        <li>You get four calls: the <em>flop</em>, the <em>turn</em>,
+          the <em>river</em> and the <em>showdown</em>.</li>
+      </ol>
+      <ul class="rules-fine">
+        <li>The hand reads left to right: the cards that make the rank first,
+          then the spares — highest first, ties settled by suit
+          (♠&nbsp;♥&nbsp;♦&nbsp;♣).</li>
+        <li>Each call also shows what your own five cards would rank as.</li>
+        <li>A fresh deal at midnight.</li>
+      </ul>
+    </div>
+  </details>
+</header>
+
+<main class="table" id="table">
+  <section class="claim">
+    <span class="claim-label">The dealer admits to</span>
+    <span class="claim-value" id="claim">—</span>
+  </section>
+
+  <section class="spread" id="spread" aria-label="The twelve cards on the table"></section>
+
+  <p class="note" id="note" role="status"></p>
+
+  <section class="rows" id="rows" aria-label="Your calls"></section>
+
+  <div class="controls">
+    <button id="takeback" class="ghost">Take back</button>
+    <button id="clear" class="ghost">Clear row</button>
+    <button id="fold" class="ghost danger">Fold</button>
+    <button id="call" class="call">Call it</button>
+  </div>
+
+  <div class="stamp" id="stamp" hidden aria-hidden="true">Called</div>
+</main>
+
+<section class="result" id="result" hidden>
+  <p id="resultText"></p>
+  <p class="new-badges" id="newBadges" hidden></p>
+  <button id="share" hidden>Copy result</button>
+</section>
+
+<section class="tally" id="tally" hidden>
+  <details>
+    <summary>The tally</summary>
+    <div class="tally-body">
+      <ul id="tallyFigures"></ul>
+      <ol id="tallyDist" aria-label="Hands called by round"></ol>
+    </div>
+  </details>
+</section>
+
+<section class="history" id="history" hidden>
+  <details>
+    <summary>Past deals</summary>
+    <ol id="historyLines"></ol>
+  </details>
+</section>
+
+<section class="badges">
+  <details>
+    <summary>Commendations <span class="badge-count" id="badgeCount"></span></summary>
+    <ul id="badgeList"></ul>
+  </details>
+</section>
+
+<footer class="ticker">
+  <span id="stats"></span>
+  <div class="felt-picker">
+    <button id="theme" class="theme-toggle" aria-haspopup="listbox" aria-expanded="false"></button>
+    <div id="themeMenu" class="theme-menu" role="listbox" aria-label="Felt" hidden></div>
+  </div>
+  <span id="next"></span>
+</footer>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script src="game.js"></script>
+</body>
+</html>

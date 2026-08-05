@@ -1,0 +1,13 @@
+{
+  "name": "dealt",
+  "version": "1.0.0",
+  "description": "Twelve cards on the table, five in the dealer's hand. Four calls to find them. A fresh deal every day.",
+  "private": true,
+  "scripts": {
+    "start": "serve -l 8000 .",
+    "test": "node test/evaluator.test.js && node test/generator.test.js && node test/badges.test.js"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
