@@ -400,6 +400,7 @@ if (typeof document !== 'undefined') (function () {
 
   function recordResult(won) {
     if (archive) return recordArchiveResult(won);
+    markShelf();
     const stats = loadStats();
     if (stats.lastPlayedDay === day) return;
     stats.played++;
@@ -420,6 +421,38 @@ if (typeof document !== 'undefined') (function () {
 
   function loadBadges() {
     return loadJSON(BADGES_KEY) || {};
+  }
+
+  /* ---------- the daily shelf ----------
+     All three dailies share this origin, so a tiny shared ledger of
+     "finished today" dates lets each game tick off its siblings. */
+
+  const SHELF_KEY = 'dailies-v1';
+  const SHELF_SLUG = 'dealt';
+
+  function localDate() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  function markShelf() {
+    const shelf = loadJSON(SHELF_KEY) || {};
+    shelf[SHELF_SLUG] = localDate();
+    localStorage.setItem(SHELF_KEY, JSON.stringify(shelf));
+  }
+
+  function renderShelfTicks() {
+    const shelf = loadJSON(SHELF_KEY) || {};
+    const today = localDate();
+    document.querySelectorAll('.also a[data-daily]').forEach((a) => {
+      if (shelf[a.dataset.daily] === today) {
+        const tick = document.createElement('span');
+        tick.className = 'done-tick';
+        tick.title = 'Played today';
+        tick.textContent = ' ✓';
+        a.after(tick);
+      }
+    });
   }
 
   // Awarded only on a win; idempotent, so replaying a saved win is safe.
@@ -720,11 +753,16 @@ if (typeof document !== 'undefined') (function () {
     $('#fold').hidden = finished();
   }
 
+  // Four ranks, poker idiom, one per round the hand was called on.
+  const RANK_NAME = ['Stone-cold read', 'Snap call', 'Good read', 'Went the distance'];
+
   function renderResult() {
     const box = $('#result');
     box.hidden = !finished();
     if (!finished()) return;
     const n = state.rows.length;
+    $('#rank').hidden = !state.solved;
+    if (state.solved) $('#rank').textContent = RANK_NAME[n - 1];
     $('#resultText').textContent = state.solved
       ? `Hand called${archive ? ' late' : ''} ${ROUND_PHRASE[n - 1]} — ${deal.name}, read in `
         + `${n} ${n === 1 ? 'call' : 'calls'}.`
@@ -1018,10 +1056,9 @@ if (typeof document !== 'undefined') (function () {
 
   function tick() {
     const ms = msToMidnight();
-    const h = String(Math.floor(ms / 3.6e6)).padStart(2, '0');
-    const m = String(Math.floor((ms % 3.6e6) / 6e4)).padStart(2, '0');
-    const s = String(Math.floor((ms % 6e4) / 1e3)).padStart(2, '0');
-    $('#next').textContent = `Next deal in ${h}:${m}:${s}`;
+    const h = Math.floor(ms / 3.6e6);
+    const m = Math.floor((ms % 3.6e6) / 6e4);
+    $('#next').textContent = `A fresh deal at midnight — ${h}h ${String(m).padStart(2, '0')}m`;
   }
 
   /* ---------- boot ---------- */
@@ -1070,10 +1107,11 @@ if (typeof document !== 'undefined') (function () {
   }
 
   renderAll();
+  renderShelfTicks();
   if (archive) {
     $('#next').textContent = 'Past deal · practice only';
   } else {
     tick();
-    setInterval(tick, 1000);
+    setInterval(tick, 30e3);
   }
 })();

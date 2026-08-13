@@ -533,6 +533,15 @@ button {
 
 .result #resultText { font-family: var(--display); font-size: 19px; }
 
+.result .rank {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(26px, 7vw, 36px);
+  letter-spacing: -0.01em;
+  color: var(--brass);
+  margin-bottom: 6px;
+}
+
 .new-badges {
   margin-top: 8px;
   font-size: 14px;
@@ -736,6 +745,8 @@ button {
 }
 
 .also a { color: var(--on-felt); }
+
+.also .done-tick { color: var(--brass); font-weight: 700; }
 
 /* ---------- toasts ---------- */
 
